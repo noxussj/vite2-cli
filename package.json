@@ -1,0 +1,21 @@
+{
+    "name": "vite2-cli",
+    "version": "1.0.3",
+    "description": "@vite/cli vite-cli vite cli vite2 vue vue3.0 router vuex",
+    "main": "index.js",
+    "author": "noxussj",
+    "license": "MIT",
+    "homepage": "https://github.com/noxussj/vite-cli",
+    "repository": "https://github.com/noxussj/vite-cli",
+    "keywords": [
+        "@vite/cli",
+        "vite-cli",
+        "vite",
+        "cli",
+        "vite2",
+        "vue",
+        "vue3.0",
+        "router",
+        "vuex"
+    ]
+}
