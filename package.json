@@ -19,6 +19,7 @@
         "vuex"
     ],
     "dependencies": {
+        "path": "^0.12.7",
         "plop": "^2.7.4"
     }
 }
