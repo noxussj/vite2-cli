@@ -17,5 +17,8 @@
         "vue3.0",
         "router",
         "vuex"
-    ]
+    ],
+    "dependencies": {
+        "plop": "^2.7.4"
+    }
 }
