@@ -1,5 +1,5 @@
 {
-    "name": "my-vue-app",
+    "name": "{{name}}",
     "version": "1.0.0",
     "scripts": {
         "dev": "vite",

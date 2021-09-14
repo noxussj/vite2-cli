@@ -1,10 +1,9 @@
 #!/usr/bin/env node
 
-console.log('cli working')
-
 const inquirer = require('inquirer')
+const handlebars = require('handlebars')
+const fs = require('fs')
 const join = require('path').join
-const ejs = require('ejs')
 const { readdirSync, writeFileSync } = require('./libs/readdir-sync.js')
 
 inquirer
@@ -22,10 +21,16 @@ inquirer
         const filesPath = readdirSync(tmpDir)
 
         filesPath.forEach((file) => {
-            ejs.renderFile(join(tmpDir, file), anwsers, (err, res) => {
-                if (err) throw err
+            const hbsList = ['package.json']
+            let content = fs.readFileSync(join(tmpDir, file), 'utf-8')
 
-                writeFileSync(join(destDir, file), res)
+            hbsList.map((fileName) => {
+                if (file.indexOf(fileName) > -1) {
+                    const template = handlebars.compile(content)
+                    content = template(anwsers)
+                }
             })
+
+            writeFileSync(join(destDir, file), content)
         })
     })
