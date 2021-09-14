@@ -4,7 +4,7 @@ const inquirer = require('inquirer')
 const handlebars = require('handlebars')
 const fs = require('fs')
 const join = require('path').join
-const { readdirSync, writeFileSync } = require('./libs/readdir-sync.js')
+const { readdirSync, writeFileSync } = require('../libs/readdir-sync.js')
 
 inquirer
     .prompt([
@@ -16,12 +16,12 @@ inquirer
         }
     ])
     .then((anwsers) => {
-        const tmpDir = join(__dirname, 'templates/demo')
+        const tmpDir = join(__dirname, '../', 'templates/demo')
         const destDir = process.cwd()
         const filesPath = readdirSync(tmpDir)
 
         filesPath.forEach((file) => {
-            const hbsList = ['package.json']
+            const hbsList = ['package.json', 'index.html']
             let content = fs.readFileSync(join(tmpDir, file), 'utf-8')
 
             hbsList.map((fileName) => {
