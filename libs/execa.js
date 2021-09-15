@@ -5,7 +5,7 @@ function execa({ cmd, cwd, cb, end }) {
     try {
         const _execa = require('execa')
         const [_cmd, ...param] = cmd.split(' ')
-        const child = _execa.sync(_cmd, param, { cwd })
+        const child = _execa(_cmd, param, { cwd })
 
         child.stdout.on('data', (buffer) => {
             const content = buffer.toString().trim()
