@@ -12,7 +12,7 @@ const { execa } = require('../libs/execa.js')
 const questions = [
     {
         type: 'input',
-        name: 'name',
+        name: 'appName',
         message: 'Create a app',
         default: 'my-vue-app'
     },
@@ -24,7 +24,7 @@ const questions = [
     },
     {
         type: 'list',
-        name: 'theme',
+        name: 'mode',
         message: 'Please select the way you download',
         when(answers) {
             return answers.npm
@@ -58,7 +58,7 @@ inquirer.prompt(questions).then((anwsers) => {
                         }
                     })
 
-                    writeFileSync(join(destDir, anwsers.name, file), content)
+                    writeFileSync(join(destDir, anwsers.appName, file), content)
 
                     resolve()
                 }, 100)
@@ -66,18 +66,33 @@ inquirer.prompt(questions).then((anwsers) => {
         })
     })
 
+    /**
+     * 初始化目录后执行，安装依赖
+     */
     processArray(asyncArray).then((res) => {
-        const cb = (content) => {
-            spinner.text = 'dependencies ' + content
-            spinner.color = 'red'
-        }
+        if (anwsers.npm) {
+            const installCmd = {
+                'Use YARN': 'yarn install',
+                'Use CNPM': 'cnpm install',
+                'Use NPM': 'npm install'
+            }
 
-        const end = () => {
-            setTimeout(() => {
+            const cb = (content) => {
+                spinner.text = 'dependencies ' + content
+                spinner.color = 'red'
+            }
+
+            const end = (error) => {
                 spinner.stop()
-            }, 1000)
-        }
 
-        execa({ cmd: 'yarn install', cwd: join(destDir, anwsers.name), cb, end })
+                setTimeout(() => {
+                    if (error) console.error(error, 'fdsafds' + '报错报错报错报错报错报错报错报错报错' + 'fdsafdsafdsaw')
+                }, 200)
+            }
+
+            execa({ cmd: installCmd[anwsers.mode], cwd: join(destDir, anwsers.appName), cb, end })
+        } else {
+            spinner.stop()
+        }
     })
 })

@@ -2,20 +2,23 @@
  * 子进程
  */
 function execa({ cmd, cwd, cb, end }) {
-    const _execa = require('execa')
+    try {
+        const _execa = require('execa')
+        const [_cmd, ...param] = cmd.split(' ')
+        const child = _execa.sync(_cmd, param, { cwd })
 
-    const [_cmd, ...param] = cmd.split()
-    const child = _execa(_cmd, param, { cwd })
+        child.stdout.on('data', (buffer) => {
+            const content = buffer.toString().trim()
 
-    child.stdout.on('data', (buffer) => {
-        const content = buffer.toString().trim()
+            cb(content)
+        })
 
-        cb(content)
-    })
-
-    child.stdout.on('close', (code) => {
-        end(code)
-    })
+        child.stdout.on('close', (code) => {
+            end()
+        })
+    } catch (error) {
+        end(error)
+    }
 }
 
 module.exports = { execa }
