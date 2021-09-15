@@ -86,7 +86,7 @@ inquirer.prompt(questions).then((anwsers) => {
                 spinner.stop()
 
                 setTimeout(() => {
-                    if (error) console.error(error, 'fdsafds' + '报错报错报错报错报错报错报错报错报错' + 'fdsafdsafdsaw')
+                    if (error) console.error(error)
                 }, 200)
             }
 
