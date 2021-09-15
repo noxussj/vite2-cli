@@ -4,10 +4,10 @@ const inquirer = require('inquirer')
 const handlebars = require('handlebars')
 const fs = require('fs')
 const join = require('path').join
-const execa = require('execa')
 const { readdirSync, writeFileSync } = require('../libs/readdir-sync.js')
 const { processArray } = require('../libs/async-map.js')
 const { spinner } = require('../libs/ora.js')
+const { execa } = require('../libs/execa.js')
 
 const questions = [
     {
@@ -67,19 +67,17 @@ inquirer.prompt(questions).then((anwsers) => {
     })
 
     processArray(asyncArray).then((res) => {
-        const child = execa('yarn', ['install'], { cwd: join(destDir, anwsers.name) })
-
-        child.stdout.on('data', (buffer) => {
-            let str = buffer.toString().trim()
-
-            spinner.text = 'dependencies ' + str
+        const cb = (content) => {
+            spinner.text = 'dependencies ' + content
             spinner.color = 'red'
-        })
+        }
 
-        child.stdout.on('close', (code) => {
+        const end = () => {
             setTimeout(() => {
                 spinner.stop()
             }, 1000)
-        })
+        }
+
+        execa({ cmd: 'yarn install', cwd: join(destDir, anwsers.name), cb, end })
     })
 })
