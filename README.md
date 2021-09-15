@@ -13,7 +13,7 @@ npm i vite2-cli -g
 使用 cli
 
 ```
-vite2-cli [app name]
+vite2-cli
 ```
 
 ## 相关功能

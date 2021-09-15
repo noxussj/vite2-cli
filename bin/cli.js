@@ -1,6 +1,5 @@
 #!/usr/bin/env node
 
-const ora = require('ora')
 const inquirer = require('inquirer')
 const handlebars = require('handlebars')
 const fs = require('fs')
@@ -8,6 +7,7 @@ const join = require('path').join
 const execa = require('execa')
 const { readdirSync, writeFileSync } = require('../libs/readdir-sync.js')
 const { processArray } = require('../libs/async-map.js')
+const { spinner } = require('../libs/ora.js')
 
 const questions = [
     {
@@ -34,13 +34,7 @@ const questions = [
 ]
 
 inquirer.prompt(questions).then((anwsers) => {
-    const spinner = ora({
-        text: 'download files',
-        spinner: {
-            interval: 80,
-            frames: ['⠋', '⠙', '⠹', '⠸', '⠼', '⠴', '⠦', '⠧', '⠇', '⠏']
-        }
-    }).start()
+    spinner.start()
 
     const tmpDir = join(__dirname, '../', 'templates/demo')
     const destDir = process.cwd()
