@@ -5,6 +5,7 @@ const inquirer = require('inquirer')
 const handlebars = require('handlebars')
 const fs = require('fs')
 const join = require('path').join
+const execa = require('execa')
 const { readdirSync, writeFileSync } = require('../libs/readdir-sync.js')
 const { processArray } = require('../libs/async-map.js')
 
@@ -28,7 +29,7 @@ const questions = [
         when(answers) {
             return answers.npm
         },
-        choices: ['yarn', 'cnpm', 'npm']
+        choices: ['Use YARN', 'Use CNPM', 'Use NPM']
     }
 ]
 
@@ -72,8 +73,19 @@ inquirer.prompt(questions).then((anwsers) => {
     })
 
     processArray(asyncArray).then((res) => {
-        setTimeout(() => {
-            spinner.stop()
-        }, 1000)
+        const child = execa('yarn', ['install'], { cwd: join(destDir, anwsers.name) })
+
+        child.stdout.on('data', (buffer) => {
+            let str = buffer.toString().trim()
+
+            spinner.text = 'dependencies ' + str
+            spinner.color = 'red'
+        })
+
+        child.stdout.on('close', (code) => {
+            setTimeout(() => {
+                spinner.stop()
+            }, 1000)
+        })
     })
 })
