@@ -16,4 +16,17 @@ function processArray(asyncArray) {
     })
 }
 
-module.exports = { processArray }
+/**
+ * 延迟执行的 promise函数
+ */
+function delayPromise(fn, time, ...arg) {
+    return () => {
+        return new Promise((resolve) => {
+            setTimeout(() => {
+                fn(resolve, ...arg)
+            }, time)
+        })
+    }
+}
+
+module.exports = { processArray, delayPromise }

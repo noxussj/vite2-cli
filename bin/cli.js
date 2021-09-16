@@ -5,7 +5,7 @@ const handlebars = require('handlebars')
 const fs = require('fs')
 const join = require('path').join
 const { readdirSync, writeFileSync } = require('../libs/readdir-sync.js')
-const { processArray } = require('../libs/async-map.js')
+const { processArray, delayPromise } = require('../libs/async-map.js')
 const { spinner } = require('../libs/ora.js')
 const { child } = require('../libs/child-process.js')
 
@@ -54,31 +54,20 @@ function downloadTemplates({ anwsers }) {
     const destDir = process.cwd()
     const templateFiles = readdirSync(tmpDir)
     const hbsList = ['package.json', 'index.html']
-    const asyncArray = []
 
-    templateFiles.forEach((file) => {
-        asyncArray.push(() => {
-            return new Promise((resolve) => {
-                setTimeout(() => {
-                    spinner.text = 'download templates ' + file
+    const fn = (resolve, file) => {
+        spinner.text = 'download templates ' + file
+        let content = fs.readFileSync(join(tmpDir, file), 'utf-8')
 
-                    let content = fs.readFileSync(join(tmpDir, file), 'utf-8')
-
-                    hbsList.map((fileName) => {
-                        if (file.indexOf(fileName) > -1) {
-                            const template = handlebars.compile(content)
-                            content = template(anwsers)
-                        }
-                    })
-
-                    writeFileSync(join(destDir, anwsers.appName, file), content)
-
-                    resolve()
-                }, 50)
-            })
+        hbsList.map((fileName) => {
+            if (file.indexOf(fileName) > -1) content = handlebars.compile(content)(anwsers)
         })
-    })
 
+        writeFileSync(join(destDir, anwsers.appName, file), content)
+        resolve()
+    }
+
+    const asyncArray = templateFiles.map((file) => delayPromise(fn, 50, file))
     return processArray(asyncArray)
 }
 
@@ -87,37 +76,28 @@ function downloadTemplates({ anwsers }) {
  */
 function downloadDependencies({ anwsers }) {
     const destDir = process.cwd()
+    const installCmd = {
+        'Use YARN': 'yarn install',
+        'Use CNPM': 'cnpm install',
+        'Use NPM': 'npm install'
+    }
+    spinner.text = 'download dependencies'
+    spinner.color = 'red'
 
     return new Promise((resolve) => {
-        spinner.text = 'download dependencies'
-        spinner.color = 'red'
+        const end = () => {
+            spinner.stop()
+            resolve()
+        }
 
         if (anwsers.npm) {
-            const installCmd = {
-                'Use YARN': 'yarn install',
-                'Use CNPM': 'cnpm install',
-                'Use NPM': 'npm install'
-            }
-
             const cb = (content) => {
                 spinner.text = 'download dependencies ' + content
             }
 
-            const end = (error) => {
-                setTimeout(() => {
-                    spinner.stop()
-                    resolve()
-
-                    setTimeout(() => {
-                        if (error) console.error(error)
-                    }, 200)
-                }, 1000)
-            }
-
             child({ cmd: installCmd[anwsers.mode], cwd: join(destDir, anwsers.appName), cb, end })
         } else {
-            spinner.stop()
-            resolve()
+            end()
         }
     })
 }

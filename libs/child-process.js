@@ -19,11 +19,19 @@ function child({ cmd, cwd, cb, end }) {
         })
 
         _child.on('close', (code) => {
-            end()
+            setTimeout(() => {
+                end()
+            }, 1000)
         })
 
         _child.on('error', (err) => {
-            end(err)
+            setTimeout(() => {
+                end()
+
+                setTimeout(() => {
+                    if (err) console.error(err)
+                }, 200)
+            }, 1000)
         })
     } catch (error) {
         end(error)
