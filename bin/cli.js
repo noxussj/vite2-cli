@@ -7,7 +7,7 @@ const join = require('path').join
 const { readdirSync, writeFileSync } = require('../libs/readdir-sync.js')
 const { processArray } = require('../libs/async-map.js')
 const { spinner } = require('../libs/ora.js')
-const { execa } = require('../libs/execa.js')
+const { child } = require('../libs/child-process.js')
 
 const questions = [
     {
@@ -61,7 +61,7 @@ inquirer.prompt(questions).then((anwsers) => {
                     writeFileSync(join(destDir, anwsers.appName, file), content)
 
                     resolve()
-                }, 100)
+                }, 50)
             })
         })
     })
@@ -70,6 +70,9 @@ inquirer.prompt(questions).then((anwsers) => {
      * 初始化目录后执行，安装依赖
      */
     processArray(asyncArray).then((res) => {
+        spinner.text = 'download dependencies'
+        spinner.color = 'red'
+
         if (anwsers.npm) {
             const installCmd = {
                 'Use YARN': 'yarn install',
@@ -78,19 +81,20 @@ inquirer.prompt(questions).then((anwsers) => {
             }
 
             const cb = (content) => {
-                spinner.text = 'dependencies ' + content
-                spinner.color = 'red'
+                spinner.text = 'download dependencies ' + content
             }
 
             const end = (error) => {
-                spinner.stop()
-
                 setTimeout(() => {
-                    if (error) console.error(error)
-                }, 200)
+                    spinner.stop()
+
+                    setTimeout(() => {
+                        if (error) console.error(error)
+                    }, 200)
+                }, 1000)
             }
 
-            execa({ cmd: installCmd[anwsers.mode], cwd: join(destDir, anwsers.appName), cb, end })
+            child({ cmd: installCmd[anwsers.mode], cwd: join(destDir, anwsers.appName), cb, end })
         } else {
             spinner.stop()
         }
