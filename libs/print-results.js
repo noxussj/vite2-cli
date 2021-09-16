@@ -8,8 +8,14 @@ function printResults({ taskTime, templatesData }) {
 
     console.log('\n')
 
-    console.log('Please enter ' + chalk.cyan(`cd ${templatesData.appName}`))
-    console.log('Please enter ' + chalk.cyan(`npm run dev`))
+    if (templatesData.npm) {
+        console.log('Please enter ' + chalk.cyan(`cd ${templatesData.appName}`))
+        console.log('Please enter ' + chalk.cyan(`npm run dev`))
+    } else {
+        console.log('Please enter ' + chalk.cyan(`cd ${templatesData.appName}`))
+        console.log('Please enter ' + chalk.cyan(`npm install`))
+        console.log('Please enter ' + chalk.cyan(`npm run dev`))
+    }
 }
 
 module.exports = { printResults }
