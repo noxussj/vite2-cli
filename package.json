@@ -1,6 +1,6 @@
 {
     "name": "vite2-cli",
-    "version": "1.0.8",
+    "version": "1.0.9",
     "description": "@vite/cli vite-cli vite cli vite2 vue vue3.0 router vuex sass js javascript ts typescript eslint prettier chalk execa handlebars ora husky lint-staged mrm cli",
     "main": "index.js",
     "type": "commonjs",
