@@ -40,3 +40,27 @@ vite2-cli
 -   refactor：重构（即不是新增功能，也不是修改 bug 的代码变动）
 -   test：增加测试
 -   chore：构建过程或辅助工具的变动
+
+## 注意事项
+
+#### 格式化配置
+
+-   项目中默认在 .vscode / settings.json 中已经配置好了
+
+-   请尽量避免用户的配置和项目工作区的配置存在冲突（如果有，会以工作区的为准）
+
+-   vue、ts、json 等文件统一使用（prettier 进行格式化）
+
+#### 插件配置
+
+-   请禁用 Vetur 插件
+
+-   必须安装 Volar 插件 、 Prettier - Code formatter 插件、ESLint 插件
+
+-   可选安装 Vue 3 Snippets 插件
+
+#### 无法解析全局模块
+
+-   找不到模块 “vue” 或其相应的类型声明
+
+-   安装一下 node_modules 报错就会消失
