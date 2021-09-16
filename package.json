@@ -21,6 +21,7 @@
         "vuex"
     ],
     "dependencies": {
+        "chalk": "4.1.2",
         "execa": "0.7.0",
         "handlebars": "4.7.7",
         "inquirer": "8.1.3",

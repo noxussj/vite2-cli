@@ -9,6 +9,9 @@ const { processArray } = require('../libs/async-map.js')
 const { spinner } = require('../libs/ora.js')
 const { child } = require('../libs/child-process.js')
 
+/**
+ * 问题集合
+ */
 const questions = [
     {
         type: 'input',
@@ -33,21 +36,31 @@ const questions = [
     }
 ]
 
-inquirer.prompt(questions).then((anwsers) => {
+/**
+ * 询问完毕
+ */
+inquirer.prompt(questions).then(async (anwsers) => {
     spinner.start()
 
+    await downloadTemplates({ anwsers })
+    await downloadDependencies({ anwsers })
+})
+
+/**
+ * 下载模板
+ */
+function downloadTemplates({ anwsers }) {
     const tmpDir = join(__dirname, '../', 'templates/demo')
     const destDir = process.cwd()
-    const filesPath = readdirSync(tmpDir)
+    const templateFiles = readdirSync(tmpDir)
     const hbsList = ['package.json', 'index.html']
-
     const asyncArray = []
 
-    filesPath.forEach((file) => {
+    templateFiles.forEach((file) => {
         asyncArray.push(() => {
             return new Promise((resolve) => {
                 setTimeout(() => {
-                    spinner.text = 'download ' + file
+                    spinner.text = 'download templates ' + file
 
                     let content = fs.readFileSync(join(tmpDir, file), 'utf-8')
 
@@ -66,10 +79,16 @@ inquirer.prompt(questions).then((anwsers) => {
         })
     })
 
-    /**
-     * 初始化目录后执行，安装依赖
-     */
-    processArray(asyncArray).then((res) => {
+    return processArray(asyncArray)
+}
+
+/**
+ * 下载依赖
+ */
+function downloadDependencies({ anwsers }) {
+    const destDir = process.cwd()
+
+    return new Promise((resolve) => {
         spinner.text = 'download dependencies'
         spinner.color = 'red'
 
@@ -87,6 +106,7 @@ inquirer.prompt(questions).then((anwsers) => {
             const end = (error) => {
                 setTimeout(() => {
                     spinner.stop()
+                    resolve()
 
                     setTimeout(() => {
                         if (error) console.error(error)
@@ -97,6 +117,7 @@ inquirer.prompt(questions).then((anwsers) => {
             child({ cmd: installCmd[anwsers.mode], cwd: join(destDir, anwsers.appName), cb, end })
         } else {
             spinner.stop()
+            resolve()
         }
     })
-})
+}
