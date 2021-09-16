@@ -1,7 +1,7 @@
 {
     "name": "vite2-cli",
-    "version": "1.0.5",
-    "description": "@vite/cli vite-cli vite cli vite2 vue vue3.0 router vuex",
+    "version": "1.0.6",
+    "description": "@vite/cli vite-cli vite cli vite2 vue vue3.0 router vuex sass js javascript ts typescript eslint prettier chalk execa handlebars ora husky lint-staged mrm cli",
     "main": "index.js",
     "type": "commonjs",
     "bin": "bin/cli.js",
@@ -18,7 +18,22 @@
         "vue",
         "vue3.0",
         "router",
-        "vuex"
+        "vuex",
+        "sass",
+        "js",
+        "javascript",
+        "ts",
+        "typescript",
+        "eslint",
+        "prettier",
+        "chalk",
+        "execa",
+        "handlebars",
+        "ora",
+        "husky",
+        "lint-staged",
+        "mrm",
+        "cli"
     ],
     "dependencies": {
         "chalk": "4.1.2",
