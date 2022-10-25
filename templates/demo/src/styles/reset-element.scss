@@ -1,0 +1,31 @@
+.reset-element {
+    // 重写 el-select 样式
+    .el-select {
+        width: 200px;
+
+        .el-input {
+            .el-input__wrapper {
+                padding: 0 22px;
+                background: rgba(0, 255, 210, 0.08);
+                box-shadow: unset;
+                border-radius: 16px;
+
+                .el-icon {
+                    color: #00ffff;
+                    // margin-right: 18px !important;
+                }
+
+                .el-input__inner {
+                    height: 32px;
+                    line-height: 32px;
+                    color: #00ffff;
+                    background: transparent;
+                }
+            }
+
+            .el-input__wrapper.is-focus {
+                box-shadow: unset;
+            }
+        }
+    }
+}

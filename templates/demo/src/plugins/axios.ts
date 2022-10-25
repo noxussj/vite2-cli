@@ -1,11 +1,14 @@
 import axios from 'axios'
 import qs from 'qs'
+import { url } from 'config/api'
 
 /**
  * 请求拦截器
  */
 axios.interceptors.request.use((config: any) => {
-    config.data = qs.stringify(config.data)
+    // if (import.meta.env.MODE === 'development') {
+    //     config.url = url + config.url
+    // }
 
     return config
 })
@@ -28,13 +31,15 @@ const request = (method: string, option: any, fn: Function = (x: any) => x) => {
             axios({
                 method: method,
                 url: option.url,
-                params: method === 'get' ? option.param : {},
-                data: param,
+                params: method === 'get' ? param : {},
+                data: method === 'post' ? param : {},
                 headers: {
                     'Content-Type': 'application/x-www-form-urlencoded;'
                 },
                 withCredentials: true, // 携带cookie
                 timeout: 5000
+            }).then((res) => {
+                resolve(fn(res.data))
             })
         } else {
             resolve(fn(null))

@@ -1,0 +1,22 @@
+.components__layout-row {
+    width: 100%;
+    height: 100%;
+}
+
+.components__layout-row.horizontal {
+    width: 100%;
+    display: flex;
+
+    .components__layout-col + .components__layout-col {
+        margin-left: var(--app-layout-horizontal-space);
+    }
+}
+
+.components__layout-row.vertical {
+    display: flex;
+    flex-direction: column;
+
+    .components__layout-col + .components__layout-col {
+        margin-top: var(--app-layout-vertical-space);
+    }
+}
