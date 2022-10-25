@@ -1,0 +1,151 @@
+{
+    // Place your snippets for vue here. Each snippet is defined under a snippet name and has a prefix, body and
+    // description. The prefix is what is used to trigger the snippet and the body will be expanded and inserted. Possible variables are:
+    // $1, $2 for tab stops, $0 for the final cursor position, and ${1:label}, ${2:another} for placeholders. Placeholders with the
+    // same ids are connected.
+    // Example:
+    "noxussj tag": {
+        "prefix": "tag",
+        "body": [
+            "<$1 />",
+        ],
+        "description": "noxussj tag"
+    },
+    "noxussj v-for": {
+        "prefix": "v-for",
+        "body": ["v-for=\"(item, index) in $1\" :key=\"index\""],
+        "description": "noxussj v-for"
+    },
+    "noxussj template": {
+        "prefix": "template",
+        "body": [
+            "<template>",
+            "    <div class=\"$1\"></div>",
+            "</template>",
+        ],
+        "description": "noxussj template"
+    },
+    "noxussj scss": {
+        "prefix": "scss",
+        "body": [
+            "<style lang=\"scss\">",
+            "@import './index.scss';",
+            "</style>",
+        ],
+        "description": "noxussj scss"
+    },
+    "noxussj script-ts-setup": {
+        "prefix": "script-ts-setup",
+        "body": [
+            "<script lang=\"ts\" setup>",
+            "$1",
+            "</script>",
+        ],
+        "description": "noxussj script-ts-setup"
+    },
+    "noxussj props": {
+        "prefix": "props",
+        "body": [
+            "import { PropType } from 'vue'",
+            "",
+            "const props = defineProps({",
+            "    data: {",
+            "        type: String,",
+            "        default: ''",
+            "    }",
+            "})",
+        ],
+        "description": "noxussj props"
+    },
+    "noxussj propsType": {
+        "prefix": "propsType",
+        "body": [
+            "import { PropType } from 'vue'",
+            "",
+            "interface Data {",
+            "    name: string",
+            "    value: string",
+            "}",
+            "",
+            "const props = defineProps({",
+            "    data: {",
+            "        type: Array as PropType<Data[]>,",
+            "        default: () => []",
+            "    }",
+            "})",
+        ],
+        "description": "noxussj propsType"
+    },
+    "noxussj emits": {
+        "prefix": "emits",
+        "body": [
+            "import { computed } from 'vue'",
+            "",
+            "interface EmitsType {",
+            "    (e: 'update:modelValue', value: String): void",
+            "}",
+            "",
+            "const emit = defineEmits<EmitsType>()",
+            "",
+            "const value = computed({",
+            "    get: () => props.modelValue,",
+            "    set: (val) => {",
+            "        emit('update:modelValue', val)",
+            "    }",
+            "})",
+
+        ],
+        "description": "noxussj emits"
+    },
+    "noxussj img": {
+        "prefix": "img",
+        "body": [
+            "<img alt=\"\" src=\"@/assets/$1.png\" />",
+        ],
+        "description": "noxussj img"
+    },
+    "noxussj components": {
+        "prefix": "components",
+        "body": [
+            "<$1 />",
+        ],
+        "description": "noxussj components"
+    },
+    "noxussj import components": {
+        "prefix": "import components",
+        "body": [
+            "import $2 from '@/views/components/$1/index.vue'",
+        ],
+        "description": "noxussj import components"
+    },
+    "noxussj useRoute": {
+        "prefix": "useRoute",
+        "body": [
+            "import { useRoute } from 'vue-router'",
+            "",
+            "const route = useRoute()",
+        ],
+        "description": "noxussj useRoute"
+    },
+    "noxussj background": {
+        "prefix": "background",
+        "body": [
+            "background: url('@/assets/$1.png');",
+        ],
+        "description": "noxussj background"
+    },
+    "noxussj row": {
+        "prefix": "row",
+        "body": [
+            "<el-row :gutter=\"20\" :style=\"{ height: '100%' }\">$1</el-row>",
+        ],
+        "description": "noxussj row"
+    },
+    "noxussj col": {
+        "prefix": "col",
+        "body": [
+            "<el-col :style=\"{ width: '100%', height: '100%' }\">$1</el-col>",
+        ],
+        "description": "noxussj col"
+    }
+}
